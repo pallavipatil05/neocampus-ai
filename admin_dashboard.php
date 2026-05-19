@@ -1,3 +1,4 @@
+```php
 <?php
 session_start();
 
@@ -44,6 +45,12 @@ $totalRegistrations = $registrations->num_rows;
 
 <link rel="stylesheet" href="assets/css/style.css">
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
 </head>
 
 <body>
@@ -61,16 +68,14 @@ $totalRegistrations = $registrations->num_rows;
 </a>
 
 <a href="admin_profile.php">
-<i class="fa-solid fa-user"></i>
-👨‍💼Admin Profile
+👨‍💼 Admin Profile
 </a>
-
 
 <a href="add_event.php">
 ➕ Add Event
 </a>
 
-<a href="events.php">
+<a href="admin_events.php">
 🎉 Manage Events
 </a>
 
@@ -78,14 +83,9 @@ $totalRegistrations = $registrations->num_rows;
 🧾 Attendance
 </a>
 
-<a href="notifications.php">
-🔔 Notifications
-</a>
-
 <a href="analytics.php">
 📊 Analytics
 </a>
-
 
 <a href="calendar.php">
 📅 Calendar
@@ -99,26 +99,17 @@ $totalRegistrations = $registrations->num_rows;
 ➕ Send Notification
 </a>
 
-<a href="attendance_dashboard.php">
-🧾 Attendance
-</a>
-
-<a href="event_attendance.php">
-<i class="fa-solid fa-clipboard-list"></i>
-Event Attendance
+<a href="admin_events.php">
+📋 Event Registrations
 </a>
 
 <a href="logout.php">
 🚪 Logout
 </a>
 
-
-
-<br><br>
-
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 
 <div class="main">
 
@@ -262,10 +253,34 @@ View
 
 </div>
 
-</div>
+<!-- EVENT REGISTRATIONS -->
+
+<div class="card">
+
+<h2>📋 Event Registrations</h2>
+
+<br>
+
+<p>
+View registrations for all events
+</p>
+
+<br>
+
+<a href="admin_events.php">
+
+<button class="btn">
+Open
+</button>
+
+</a>
 
 </div>
 
+</div>
+
+</div>
 
 </body>
 </html>
+

@@ -1,4 +1,4 @@
-```php id="t1p8vk"
+```php
 <?php
 session_start();
 include "config.php";
@@ -8,7 +8,7 @@ if(!isset($_SESSION['srn'])){
     exit();
 }
 
-/* GET EVENT ID */
+/* CHECK EVENT ID */
 
 if(!isset($_GET['id'])){
     die("Invalid Event");
@@ -16,7 +16,7 @@ if(!isset($_GET['id'])){
 
 $event_id = $_GET['id'];
 
-/* FETCH EVENT */
+/* FETCH EVENT DETAILS */
 
 $event = $conn->query("
 SELECT * FROM Event
@@ -25,22 +25,29 @@ WHERE event_id='$event_id'
 
 $e = $event->fetch_assoc();
 
-/* FETCH ATTENDANCE ONLY FOR THIS EVENT */
+/* FETCH REGISTRATIONS FOR THIS EVENT ONLY */
+
 
 $result = $conn->query("
-SELECT attendance.*,
-Student.name,
-Student.srn
 
-FROM attendance
+SELECT Registration.*,
+Event.event_name
 
-JOIN Student
-ON attendance.srn = Student.srn
+FROM Registration
 
-WHERE attendance.event_id='$event_id'
+INNER JOIN Event
+ON Registration.event_id = Event.event_id
 
-ORDER BY attendance.attendance_date DESC
+WHERE Registration.event_id = '$event_id'
+
 ");
+
+
+if(!$result){
+    die($conn->error);
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -48,9 +55,13 @@ ORDER BY attendance.attendance_date DESC
 
 <head>
 
-<title>Event Attendance</title>
+<title>View Registrations</title>
 
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet"
+href="assets/css/style.css">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <style>
 
@@ -61,7 +72,7 @@ ORDER BY attendance.attendance_date DESC
     margin-top:30px;
 }
 
-.attendance-table{
+table{
 
     width:100%;
 
@@ -77,7 +88,7 @@ ORDER BY attendance.attendance_date DESC
     overflow:hidden;
 }
 
-.attendance-table th{
+th{
 
     background:
     linear-gradient(
@@ -88,14 +99,14 @@ ORDER BY attendance.attendance_date DESC
 
     color:white;
 
-    padding:18px;
+    padding:16px;
 
-    font-size:16px;
+    font-size:15px;
 }
 
-.attendance-table td{
+td{
 
-    padding:16px;
+    padding:14px;
 
     text-align:center;
 
@@ -105,7 +116,7 @@ ORDER BY attendance.attendance_date DESC
     1px solid rgba(255,255,255,0.08);
 }
 
-.attendance-table tr:hover{
+tr:hover{
 
     background:
     rgba(255,255,255,0.05);
@@ -124,20 +135,20 @@ ORDER BY attendance.attendance_date DESC
 
     color:#c77dff;
 
-    margin-bottom:30px;
-
     font-size:22px;
+
+    margin-bottom:25px;
 }
 
 .no-data{
 
     text-align:center;
 
-    margin-top:40px;
+    color:white;
 
     font-size:22px;
 
-    color:white;
+    margin-top:40px;
 }
 
 </style>
@@ -179,7 +190,7 @@ ORDER BY attendance.attendance_date DESC
 <div class="main">
 
 <h1 class="page-title">
-📋 Event Attendance
+📋 Event Registrations
 </h1>
 
 <div class="event-name">
@@ -199,17 +210,27 @@ if($result->num_rows > 0){
 
 ?>
 
-<table class="attendance-table">
+<table>
 
 <tr>
 
-<th>SRN</th>
+<th>Team Name</th>
 
-<th>Student Name</th>
+<th>Leader Name</th>
 
-<th>Status</th>
+<th>Leader SRN</th>
 
-<th>Date</th>
+<th>Member 2</th>
+
+<th>Member 2 SRN</th>
+
+<th>Member 3</th>
+
+<th>Member 3 SRN</th>
+
+<th>Member 4</th>
+
+<th>Member 4 SRN</th>
 
 </tr>
 
@@ -222,43 +243,39 @@ while($row = $result->fetch_assoc()){
 <tr>
 
 <td>
+<?php echo $row['team_name']; ?>
+</td>
+
+<td>
+<?php echo $row['leader_name']; ?>
+</td>
+
+<td>
 <?php echo $row['srn']; ?>
 </td>
 
 <td>
-<?php echo $row['name']; ?>
+<?php echo $row['member2']; ?>
 </td>
 
 <td>
-
-<?php
-
-if(isset($row['status'])){
-
-    echo $row['status'];
-
-}else{
-
-    echo "Present";
-}
-?>
-
+<?php echo $row['member2_srn']; ?>
 </td>
 
 <td>
+<?php echo $row['member3']; ?>
+</td>
 
-<?php
+<td>
+<?php echo $row['member3_srn']; ?>
+</td>
 
-if(isset($row['attendance_date'])){
+<td>
+<?php echo $row['member4']; ?>
+</td>
 
-    echo $row['attendance_date'];
-
-}else{
-
-    echo date("Y-m-d");
-}
-?>
-
+<td>
+<?php echo $row['member4_srn']; ?>
 </td>
 
 </tr>
@@ -277,7 +294,7 @@ echo "
 
 <div class='no-data'>
 
-No attendance found for this event
+No registrations found for this event
 
 </div>
 

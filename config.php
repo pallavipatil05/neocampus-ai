@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("localhost","root","","CollegeEventDB");
+$conn = new mysqli("localhost","root","","collegeeventdb");
 
 if($conn->connect_error){
     die("Connection failed: " . $conn->connect_error);

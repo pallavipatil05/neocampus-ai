@@ -26,9 +26,74 @@ ORDER BY event_date ASC
 
 <head>
 
-<title>Student Events</title>
+<title>Admin Events</title>
 
 <link rel="stylesheet" href="assets/css/style.css">
+
+<style>
+
+.event-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:30px;
+
+    align-items:start;
+
+}
+
+.btn-group{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:20px;
+
+}
+
+.event-image{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+    border-radius:15px;
+
+}
+
+/* TABLET */
+
+@media(max-width:992px){
+
+    .event-grid{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .event-grid{
+
+        grid-template-columns:
+        1fr;
+
+    }
+}
+
+</style>
 
 </head>
 
@@ -36,11 +101,13 @@ ORDER BY event_date ASC
 
 <div class="sidebar">
 
-<h2>🎓 NeoCampus</h2>
+<h2>⚡ Admin Panel</h2>
 
 <a href="dashboard.php">🏠 Dashboard</a>
 
-<a href="student_events.php">🎉 Events</a>
+<a href="admin_events.php">🎉 Events</a>
+
+<a href="analytics.php">📊 Analytics</a>
 
 <a href="profile.php">👤 Profile</a>
 
@@ -50,7 +117,7 @@ ORDER BY event_date ASC
 
 <div class="main">
 
-<h1>🎉 Student Events</h1>
+<h1>⚡ Admin Events</h1>
 
 <div class="search-box">
 
@@ -71,9 +138,10 @@ Search
 
 </div>
 
-<div class="container">
+<div class="event-grid">
 
 <?php
+
 
 if($result->num_rows > 0){
 
@@ -119,21 +187,41 @@ class="event-image"
 
 <br>
 
-<a href="register_event.php?id=<?php echo $row['event_id']; ?>">
+<div class="btn-group">
 
-<button class="btn">
-🚀 Register
+<a href="edit_event.php?id=<?php echo $row['event_id']; ?>">
+
+<button class="btn admin-btn">
+✏ Edit
 </button>
 
 </a>
 
-<a href="generate_certificate.php?srn=<?php echo $_SESSION['srn']; ?>&event_id=<?php echo $row['event_id']; ?>">
+<a href="delete_event.php?id=<?php echo $row['event_id']; ?>">
 
-<button class="btn">
-🏆 Certificate
+<button class="btn admin-btn">
+🗑 Delete
 </button>
 
 </a>
+
+<a href="event_attendance.php?id=<?php echo $row['event_id']; ?>">
+
+<button class="btn admin-btn">
+📋 Attendances
+</button>
+
+</a>
+
+<a href="view_registrations.php?id=<?php echo $row['event_id']; ?>">
+
+<button class="btn admin-btn">
+📋 Registrations
+</button>
+
+</a>
+
+</div>
 
 </div>
 
@@ -143,9 +231,13 @@ class="event-image"
 }else{
 
 echo "
+
 <h2 style='color:white;'>
+
 No Events Found
+
 </h2>
+
 ";
 }
 ?>
@@ -156,4 +248,3 @@ No Events Found
 
 </body>
 </html>
-```

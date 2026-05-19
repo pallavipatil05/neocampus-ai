@@ -27,7 +27,7 @@ ORDER BY id DESC
 
 <a href="dashboard.php">🏠 Dashboard</a>
 
-<a href="events.php">🎉 Events</a>
+<a href="student_events.php">🎉 Events</a>
 
 <a href="notifications.php">🔔 Notifications</a>
 

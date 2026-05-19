@@ -1,10 +1,17 @@
 ```php
+echo $_SESSION['role'];
+exit();
 <?php
 session_start();
 include "config.php";
 
 if(!isset($_SESSION['srn'])){
     header("Location: login.php");
+    exit();
+}
+
+if($_SESSION['role'] != 'student'){
+    header("Location: admin_events.php");
     exit();
 }
 
@@ -19,8 +26,6 @@ SELECT * FROM Event
 WHERE event_name LIKE '%$search%'
 ORDER BY event_date ASC
 ");
-
-$role = $_SESSION['role'];
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +33,7 @@ $role = $_SESSION['role'];
 
 <head>
 
-<title>NeoCampus Events</title>
+<title>Student Events</title>
 
 <link rel="stylesheet" href="assets/css/style.css">
 
@@ -39,8 +44,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 content="width=device-width, initial-scale=1.0">
 
 <style>
-
-/* SEARCH */
 
 .search-box{
     text-align:center;
@@ -58,21 +61,17 @@ content="width=device-width, initial-scale=1.0">
     width:320px;
 }
 
-/* EVENT GRID */
-
 .event-grid{
+
     display:grid;
+
     grid-template-columns:
     repeat(auto-fit,minmax(320px,1fr));
 
     gap:30px;
 }
 
-/* EVENT CARD */
-
 .event-card{
-
-    position:relative;
 
     overflow:hidden;
 
@@ -90,7 +89,6 @@ content="width=device-width, initial-scale=1.0">
 
     box-shadow:
     0 10px 35px rgba(0,0,0,0.4);
-
 }
 
 .event-card:hover{
@@ -101,7 +99,6 @@ content="width=device-width, initial-scale=1.0">
 
     box-shadow:
     0 0 30px rgba(168,85,247,0.4);
-
 }
 
 .event-image{
@@ -111,8 +108,6 @@ content="width=device-width, initial-scale=1.0">
 
     object-fit:cover;
 }
-
-/* CONTENT */
 
 .event-content{
     padding:25px;
@@ -144,15 +139,11 @@ content="width=device-width, initial-scale=1.0">
 
 .event-title{
 
-    font-size:34px;
+    font-size:32px;
 
     color:#f3e8ff;
 
     margin-bottom:15px;
-
-    text-shadow:
-    0 0 10px rgba(199,125,255,0.5);
-
 }
 
 .event-info{
@@ -166,34 +157,16 @@ content="width=device-width, initial-scale=1.0">
     line-height:1.8;
 }
 
-/* BUTTONS */
-
 .btn-group{
+
     margin-top:25px;
 
     display:flex;
+
     flex-wrap:wrap;
 
     gap:12px;
 }
-
-.admin-btn{
-
-    background:
-    linear-gradient(
-    135deg,
-    #ff006e,
-    #ff4d6d
-    );
-}
-
-.admin-btn:hover{
-
-    box-shadow:
-    0 0 20px rgba(255,0,110,0.7);
-}
-
-/* TEAM BOX */
 
 .team-box{
 
@@ -217,12 +190,6 @@ content="width=device-width, initial-scale=1.0">
     margin-bottom:10px;
 }
 
-.team-box p{
-    margin:5px 0;
-}
-
-/* MOBILE */
-
 @media(max-width:768px){
 
     .main{
@@ -234,10 +201,6 @@ content="width=device-width, initial-scale=1.0">
         position:relative;
         width:100%;
         height:auto;
-    }
-
-    .event-title{
-        font-size:28px;
     }
 }
 
@@ -258,28 +221,10 @@ content="width=device-width, initial-scale=1.0">
 Dashboard
 </a>
 
-<a href="events.php">
+<a href="student_events.php">
 <i class="fa-solid fa-calendar-days"></i>
 Events
 </a>
-
-<?php
-if($role == "admin"){
-?>
-
-<a href="add_event.php" class="add-event-btn">
-<i class="fa-solid fa-plus"></i>
-Add Event
-</a>
-
-<a href="analytics.php">
-<i class="fa-solid fa-chart-line"></i>
-Analytics
-</a>
-
-<?php
-}
-?>
 
 <a href="notifications.php">
 <i class="fa-solid fa-bell"></i>
@@ -302,18 +247,15 @@ Logout
 
 <div class="main">
 
-<!-- HERO -->
-
 <div class="hero">
 
 <h1 class="hero-title">
-🎉 Campus Events
+🎉 Student Events
 </h1>
 
 <p class="hero-subtitle">
 
-Explore workshops, hackathons,
-seminars and AI-powered events
+Register for events and download certificates
 
 </p>
 
@@ -395,8 +337,6 @@ Upcoming Event
 <?php echo $row['capacity']; ?>
 </div>
 
-<!-- TEAM FEATURE -->
-
 <div class="team-box">
 
 <h3>👨‍💻 Team Registration</h3>
@@ -407,13 +347,10 @@ the complete team.
 </p>
 
 <p>
-Add teammate names during
-registration.
+Add teammate names during registration.
 </p>
 
 </div>
-
-<!-- BUTTONS -->
 
 <div class="btn-group">
 
@@ -432,38 +369,6 @@ registration.
 </button>
 
 </a>
-
-<?php
-if($role == "admin"){
-?>
-
-<a href="edit_event.php?id=<?php echo $row['event_id']; ?>">
-
-<button class="btn admin-btn">
-✏ Edit
-</button>
-
-</a>
-
-<a href="delete_event.php?id=<?php echo $row['event_id']; ?>">
-
-<button class="btn admin-btn">
-🗑 Delete
-</button>
-
-</a>
-
-<a href="event_attendance.php?id=<?php echo $row['event_id']; ?>">
-
-<button class="btn admin-btn">
-📋 Attendance
-</button>
-
-</a>
-
-<?php
-}
-?>
 
 </div>
 

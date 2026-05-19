@@ -1074,3 +1074,99 @@ background:#9d4edd;
 border-radius:20px;
 
 }
+.admin-btn{
+
+background:
+linear-gradient(
+135deg,
+#7b2cbf,
+#9d4edd
+) !important;
+
+color:white;
+
+box-shadow:
+0 0 15px rgba(157,78,221,0.5);
+
+}
+
+.admin-btn:hover{
+
+background:
+linear-gradient(
+135deg,
+#9d4edd,
+#c77dff
+) !important;
+
+}
+
+.event-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3, 1fr);
+
+    gap:30px;
+
+    align-items:start;
+
+}
+
+
+@media(max-width:992px){
+
+    .event-grid{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+}
+
+@media(max-width:768px){
+
+    .event-grid{
+
+        grid-template-columns:
+        1fr;
+
+    }
+}
+
+.event-card{
+
+    width:350px;
+
+    min-height:650px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+}
+
+.event-image{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+    border-radius:20px 20px 0 0;
+}
+
+.event-content{
+
+    padding:25px;
+
+    flex:1;
+}
+
+.btn-group{
+
+    margin-top:auto;
+}

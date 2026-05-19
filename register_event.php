@@ -1,3 +1,4 @@
+```php
 <?php
 session_start();
 include "config.php";
@@ -5,6 +6,10 @@ include "config.php";
 if(!isset($_SESSION['srn'])){
     header("Location: login.php");
     exit();
+}
+
+if(!isset($_GET['id'])){
+    die("Invalid Event");
 }
 
 $event_id = $_GET['id'];
@@ -16,9 +21,10 @@ WHERE event_id='$event_id'
 
 if(isset($_POST['register'])){
 
-    $srn = $_SESSION['srn'];
+    $srn = $_POST['leader_srn'];
 
     $team_name = $_POST['team_name'];
+    $leader_name = $_POST['leader_name'];
 
     $member2 = $_POST['member2'];
     $member2_srn = $_POST['member2_srn'];
@@ -29,50 +35,58 @@ if(isset($_POST['register'])){
     $member4 = $_POST['member4'];
     $member4_srn = $_POST['member4_srn'];
 
-    // INSERT QUERY BELOW
+   $sql = " INSERT INTO Registration(
+    event_id, 
+    srn,
+    team_name,
+    member2,
+    member3,
+    member4,
 
-}
+    member2_srn,
+    member3_srn,
+    member4_srn,
+ leader_name
+    ) 
+    VALUES
+    ( 
+    '$event_id',
+    '$srn',
+    '$team_name',
+    '$member2',
+    '$member3', 
+    '$member4', 
 
-    $sql = "INSERT INTO Registration(
+    '$member2_srn',
+    '$member3_srn', 
+   '$member4_srn', 
 
-        event_id,
-        srn,
-        team_name,
-        member2,
-        member3,
-        member4
-
-    )
-
-    VALUES(
-
-        '$event_id',
-        '$srn',
-        '$team_name',
-        '$member2',
-        '$member3',
-        '$member4'
-    )";
+   '$leader_name' 
+   ) 
+   ";
 
     if($conn->query($sql)){
 
         echo "
+
         <script>
+
         alert('Team Registered Successfully');
-        window.location='events.php';
+
+        window.location='student_events.php';
+
         </script>
+
         ";
 
     }else{
 
-        echo "
-        <script>
-        alert('Registration Failed');
-        </script>
-        ";
+        echo $conn->error;
     }
 }
 ?>
+```
+
 
 <!DOCTYPE html>
 <html>
@@ -122,13 +136,23 @@ placeholder="Enter Team Name"
 required
 >
 
-<label>Team Leader SRN</label>
+<label>Team Leader Name</label>
 
 <input
 type="text"
-value="<?php echo $_SESSION['srn']; ?>"
-readonly
+name="leader_name"
+placeholder="Enter Team Leader Name"
+required
 >
+
+<label>Team Leader SRN</label>
+
+<input
+ type="text"
+ name="leader_srn" 
+ placeholder="Enter Team Leader SRN" 
+ required 
+ >
 
 <label>Member 2 Name</label>
 
@@ -177,7 +201,17 @@ type="text"
 name="member4_srn"
 placeholder="Enter Member 4 SRN"
 >
+<br><br>
+
+<button
+type="submit"
+name="register"
+class="btn"
+>
+
 🎉 Register Team
+
+</button>
 
 </button>
 
