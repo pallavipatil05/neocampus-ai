@@ -6,13 +6,13 @@ include "config.php";
 
 if(isset($_POST['login'])){
 
-    $admin_id = $_POST['admin_id'];
+    $srn = $_POST['srn'];
 
     $password = $_POST['password'];
 
     $sql = "
-    SELECT * FROM admin
-    WHERE admin_id='$admin_id'
+    SELECT * FROM student
+    WHERE srn='$srn'
     AND password='$password'
     ";
 
@@ -22,16 +22,18 @@ if(isset($_POST['login'])){
 
         $row = $result->fetch_assoc();
 
-        $_SESSION['admin'] = $row['admin_id'];
+        $_SESSION['srn'] = $row['srn'];
 
-        $_SESSION['admin_name'] = $row['name'];
+        $_SESSION['name'] = $row['name'];
+
+        $_SESSION['role'] = "student";
 
         echo "
         <script>
 
-        alert('Admin Login Successful');
+        alert('Login Successful');
 
-        window.location='admin_dashboard.php';
+        window.location='dashboard.php';
 
         </script>
         ";
@@ -41,7 +43,7 @@ if(isset($_POST['login'])){
         echo "
         <script>
 
-        alert('Invalid Admin ID or Password');
+        alert('Invalid SRN or Password');
 
         </script>
         ";
@@ -55,7 +57,7 @@ if(isset($_POST['login'])){
 
 <head>
 
-<title>Admin Login</title>
+<title>Student Login</title>
 
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
@@ -159,8 +161,8 @@ input{
     background:
     linear-gradient(
     135deg,
-    #f43f5e,
-    #ec4899
+    #7c3aed,
+    #a855f7
     );
 
     color:white;
@@ -179,7 +181,7 @@ input{
     transform:translateY(-3px);
 
     box-shadow:
-    0 0 25px rgba(244,63,94,0.5);
+    0 0 25px rgba(168,85,247,0.5);
 }
 
 .signup-link{
@@ -193,7 +195,7 @@ input{
 
 .signup-link a{
 
-    color:#ec4899;
+    color:#a855f7;
 
     text-decoration:none;
 }
@@ -207,16 +209,16 @@ input{
 <div class="login-card">
 
 <h1>
-👨‍💼 Admin Login
+🎓 Student Login
 </h1>
 
 <form method="POST">
 
-<label>Admin ID</label>
+<label>SRN</label>
 
 <input
 type="text"
-name="admin_id"
+name="srn"
 required
 >
 
@@ -243,7 +245,7 @@ Login
 
 Don't have an account?
 
-<a href="admin_signup.php">
+<a href="student_signup.php">
 
 Signup
 

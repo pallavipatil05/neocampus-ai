@@ -93,6 +93,44 @@ ORDER BY event_date ASC
     }
 }
 
+
+.card{
+
+    position:relative;
+
+    z-index:1;
+
+    overflow:visible !important;
+
+}
+
+.btn-group{
+
+    position:relative;
+
+    z-index:999;
+
+}
+
+.btn{
+
+    position:relative;
+
+    z-index:9999;
+
+    cursor:pointer;
+
+}
+
+.event-image{
+
+    position:relative;
+
+    z-index:1;
+
+}
+
+
 </style>
 
 </head>
@@ -187,41 +225,39 @@ class="event-image"
 
 <br>
 
+
 <div class="btn-group">
 
-<a href="edit_event.php?id=<?php echo $row['event_id']; ?>">
-
-<button class="btn admin-btn">
+<a 
+href="edit_event.php?id=<?php echo $row['event_id']; ?>" 
+class="btn admin-btn"
+>
 ✏ Edit
-</button>
-
 </a>
 
-<a href="delete_event.php?id=<?php echo $row['event_id']; ?>">
-
-<button class="btn admin-btn">
+<a 
+href="delete_event.php?id=<?php echo $row['event_id']; ?>" 
+class="btn admin-btn"
+>
 🗑 Delete
-</button>
-
 </a>
 
-<a href="event_attendance.php?id=<?php echo $row['event_id']; ?>">
-
-<button class="btn admin-btn">
-📋 Attendances
-</button>
-
+<a 
+href="event_attendance.php?id=<?php echo $row['event_id']; ?>" 
+class="btn admin-btn"
+>
+📋 Attendance
 </a>
 
-<a href="view_registrations.php?id=<?php echo $row['event_id']; ?>">
-
-<button class="btn admin-btn">
+<a 
+href="view_registrations.php?id=<?php echo $row['event_id']; ?>" 
+class="btn admin-btn"
+>
 📋 Registrations
-</button>
-
 </a>
 
 </div>
+
 
 </div>
 

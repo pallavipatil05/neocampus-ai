@@ -1,50 +1,91 @@
 <?php
 
-session_start();
-
 include "config.php";
 
-if(isset($_POST['login'])){
+if(isset($_POST['signup'])){
 
     $admin_id = $_POST['admin_id'];
 
+    $name = $_POST['name'];
+
+    $email = $_POST['email'];
+
     $password = $_POST['password'];
 
-    $sql = "
+    /* IMAGE */
+
+    $photo = $_FILES['profile_photo']['name'];
+
+    $tmp = $_FILES['profile_photo']['tmp_name'];
+
+    move_uploaded_file(
+        $tmp,
+        "uploads/".$photo
+    );
+
+    /* CHECK ADMIN ID */
+
+    $check = $conn->query("
     SELECT * FROM admin
     WHERE admin_id='$admin_id'
-    AND password='$password'
-    ";
+    ");
 
-    $result = $conn->query($sql);
-
-    if($result->num_rows > 0){
-
-        $row = $result->fetch_assoc();
-
-        $_SESSION['admin'] = $row['admin_id'];
-
-        $_SESSION['admin_name'] = $row['name'];
+    if($check->num_rows > 0){
 
         echo "
         <script>
 
-        alert('Admin Login Successful');
-
-        window.location='admin_dashboard.php';
+        alert('Admin ID already exists');
 
         </script>
         ";
 
     }else{
 
-        echo "
-        <script>
+        $sql = "
+        INSERT INTO admin(
 
-        alert('Invalid Admin ID or Password');
+        admin_id,
+        name,
+        email,
+        password,
+        profile_photo
 
-        </script>
+        )
+
+        VALUES(
+
+        '$admin_id',
+        '$name',
+        '$email',
+        '$password',
+        '$photo'
+
+        )
         ";
+
+        if($conn->query($sql)){
+
+            echo "
+            <script>
+
+            alert('Admin Signup Successful');
+
+            window.location='admin_login.php';
+
+            </script>
+            ";
+
+        }else{
+
+            echo "
+            <script>
+
+            alert('Signup Failed');
+
+            </script>
+            ";
+        }
     }
 }
 
@@ -55,7 +96,7 @@ if(isset($_POST['login'])){
 
 <head>
 
-<title>Admin Login</title>
+<title>Admin Signup</title>
 
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
@@ -86,9 +127,9 @@ body{
 
 /* CARD */
 
-.login-card{
+.signup-card{
 
-    width:430px;
+    width:450px;
 
     padding:40px;
 
@@ -106,7 +147,7 @@ body{
     0 8px 35px rgba(0,0,0,0.35);
 }
 
-.login-card h1{
+.signup-card h1{
 
     color:white;
 
@@ -123,7 +164,7 @@ label{
 
     margin-bottom:8px;
 
-    margin-top:18px;
+    margin-top:15px;
 }
 
 input{
@@ -182,7 +223,7 @@ input{
     0 0 25px rgba(244,63,94,0.5);
 }
 
-.signup-link{
+.login-link{
 
     text-align:center;
 
@@ -191,7 +232,7 @@ input{
     color:white;
 }
 
-.signup-link a{
+.login-link a{
 
     color:#ec4899;
 
@@ -204,19 +245,36 @@ input{
 
 <body>
 
-<div class="login-card">
+<div class="signup-card">
 
 <h1>
-👨‍💼 Admin Login
+👨‍💼 Admin Signup
 </h1>
 
-<form method="POST">
+<form method="POST"
+enctype="multipart/form-data">
 
 <label>Admin ID</label>
 
 <input
 type="text"
 name="admin_id"
+required
+>
+
+<label>Full Name</label>
+
+<input
+type="text"
+name="name"
+required
+>
+
+<label>Email</label>
+
+<input
+type="email"
+name="email"
 required
 >
 
@@ -228,24 +286,32 @@ name="password"
 required
 >
 
+<label>Profile Picture</label>
+
+<input
+type="file"
+name="profile_photo"
+required
+>
+
 <button
 type="submit"
-name="login"
+name="signup"
 class="btn">
 
-Login
+Create Admin Account
 
 </button>
 
 </form>
 
-<div class="signup-link">
+<div class="login-link">
 
-Don't have an account?
+Already have an account?
 
-<a href="admin_signup.php">
+<a href="admin_login.php">
 
-Signup
+Login
 
 </a>
 
