@@ -1,6 +1,3 @@
-```php
-echo $_SESSION['role'];
-exit();
 <?php
 session_start();
 include "config.php";
@@ -370,6 +367,17 @@ Add teammate names during registration.
 
 </a>
 
+<a href="feedback.php?id=<?php echo $row['event_id']; ?>">
+
+<button class="btn">
+
+⭐ Feedback
+
+</button>
+
+</a>
+
+
 </div>
 
 </div>
@@ -401,4 +409,4 @@ No Events Found
 
 </body>
 </html>
-```
+

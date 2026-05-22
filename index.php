@@ -1,4 +1,3 @@
-```php
 <!DOCTYPE html>
 <html>
 
@@ -348,4 +347,3 @@ Admin Signup
 
 </body>
 </html>
-```
