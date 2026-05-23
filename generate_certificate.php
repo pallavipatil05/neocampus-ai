@@ -2,6 +2,37 @@
 session_start();
 include "config.php";
 
+$event_id = $_GET['event_id'];
+
+$srn = $_SESSION['srn'];
+
+$check = $conn->query("
+
+SELECT * FROM feedback
+
+WHERE event_id='$event_id'
+
+AND srn='$srn'
+
+");
+
+if($check->num_rows == 0){
+
+    echo "
+
+    <script>
+
+    alert('Please submit feedback first');
+
+    window.location='completed_events.php';
+
+    </script>
+
+    ";
+
+    exit();
+}
+
 if(
 !isset($_GET['srn']) ||
 !isset($_GET['event_id'])

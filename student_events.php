@@ -19,9 +19,9 @@ if(isset($_GET['search'])){
 }
 
 $result = $conn->query("
-SELECT * FROM Event
-WHERE event_name LIKE '%$search%'
-ORDER BY event_date ASC
+SELECT * FROM Event 
+WHERE event_date >= CURDATE()
+ ORDER BY event_date ASC
 ");
 ?>
 
