@@ -211,31 +211,36 @@ content="width=device-width, initial-scale=1.0">
 
 <div class="sidebar">
 
-<h2>🎓 NeoCampus</h2>
+<h2 class="logo">
+🎓 NeoCampus
+</h2>
 
-<a href="dashboard.php">
-<i class="fa-solid fa-house"></i>
-Dashboard
+<a href="student_dashboard.php">
+🏠 Dashboard
+</a>
+
+<a href="events_going_on.php">
+🟢 Events Going On
 </a>
 
 <a href="student_events.php">
-<i class="fa-solid fa-calendar-days"></i>
-Events
+📅 Upcoming Events
+</a>
+
+<a href="completed_events.php">
+✅ Completed Events
 </a>
 
 <a href="notifications.php">
-<i class="fa-solid fa-bell"></i>
-Notifications
+🔔 Notifications
 </a>
 
 <a href="profile.php">
-<i class="fa-solid fa-user"></i>
-My Profile
+👤 My Profile
 </a>
 
 <a href="logout.php">
-<i class="fa-solid fa-right-from-bracket"></i>
-Logout
+🚪 Logout
 </a>
 
 </div>
