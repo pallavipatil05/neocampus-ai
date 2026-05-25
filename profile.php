@@ -3,6 +3,25 @@ session_start();
 
 include "config.php";
 
+<?php
+
+session_start();
+
+include "config.php";
+
+$notify = $conn->query("
+
+SELECT * FROM notifications
+
+WHERE is_read = 0
+
+");
+
+$notifyCount = $notify->num_rows;
+
+?>
+
+
 if(!isset($_SESSION['srn'])){
 
     header("Location: login.php");

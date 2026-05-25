@@ -6,7 +6,6 @@ if(!isset($_SESSION['srn'])){
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -564,6 +563,37 @@ setInterval(updateClock,1000);
 updateClock();
 
 </script>
+
+<?php
+
+$popup = $conn->query("
+
+SELECT * FROM notifications
+
+WHERE is_read = 0
+
+ORDER BY id DESC
+
+LIMIT 1
+
+");
+
+if($popup->num_rows > 0){
+
+$data = $popup->fetch_assoc();
+
+?>
+
+<script>
+
+alert("🔔 New Notification:\n\n<?php echo $data['message']; ?>");
+
+</script>
+
+<?php
+}
+?>
+
 
 </body>
 </html>
