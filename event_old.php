@@ -261,7 +261,7 @@ content="width=device-width, initial-scale=1.0">
 Dashboard
 </a>
 
-<a href="events.php">
+<a href="student_events.php">
 <i class="fa-solid fa-calendar-days"></i>
 Events
 </a>

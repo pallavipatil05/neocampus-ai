@@ -4,11 +4,7 @@ session_start();
 
 include "config.php";
 
-<?php
-
-session_start();
-
-include "config.php";
+/* NOTIFICATION COUNT */
 
 $notify = $conn->query("
 
@@ -20,8 +16,7 @@ WHERE is_read = 0
 
 $notifyCount = $notify->num_rows;
 
-?>
-
+/* LOGIN CHECK */
 
 if(!isset($_SESSION['srn'])){
 
@@ -29,6 +24,8 @@ if(!isset($_SESSION['srn'])){
 
     exit();
 }
+
+/* COMPLETED EVENTS */
 
 $result = $conn->query("
 
@@ -41,6 +38,7 @@ ORDER BY event_date DESC
 ");
 
 ?>
+
 
 <!DOCTYPE html>
 <html>

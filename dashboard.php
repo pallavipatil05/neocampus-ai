@@ -153,7 +153,7 @@ Analytics, Attendance & Notifications
 <div class="live-clock" id="clock"></div>
 <br>
 
-<a href="events.php">
+<a href="student_events.php">
 
 <button class="btn">
 
@@ -199,7 +199,7 @@ seminars and workshops.
 
 <br>
 
-<a href="events.php">
+<a href="student_events.php">
 
 <button class="btn">
 
