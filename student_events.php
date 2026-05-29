@@ -1,12 +1,10 @@
 <?php
-session_start();
-include "config.php";
-
-<?php
 
 session_start();
 
 include "config.php";
+
+/* NOTIFICATION COUNT */
 
 $notify = $conn->query("
 
@@ -18,30 +16,40 @@ WHERE is_read = 0
 
 $notifyCount = $notify->num_rows;
 
-?>
+/* LOGIN CHECK */
 
 if(!isset($_SESSION['srn'])){
-    header("Location: login.php");
+
+    header("Location: student_login.php");
+
     exit();
 }
 
-if($_SESSION['role'] != 'student'){
-    header("Location: admin_events.php");
-    exit();
-}
+/* SEARCH */
 
 $search = "";
 
 if(isset($_GET['search'])){
+
     $search = $_GET['search'];
 }
 
+/* EVENTS */
+
 $result = $conn->query("
-SELECT * FROM Event 
+
+SELECT * FROM Event
+
 WHERE event_date >= CURDATE()
- ORDER BY event_date ASC
+
+AND event_name LIKE '%$search%'
+
+ORDER BY event_date ASC
+
 ");
+
 ?>
+
 
 <!DOCTYPE html>
 <html>

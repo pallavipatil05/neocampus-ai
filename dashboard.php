@@ -1,10 +1,19 @@
 <?php
+
 session_start();
 
-if(!isset($_SESSION['srn'])){
-    header("Location: login.php");
-    exit();
-}
+include "config.php";
+
+$notify = $conn->query("
+
+SELECT * FROM notifications
+
+WHERE is_read = 0
+
+");
+
+$notifyCount = $notify->num_rows;
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -71,11 +80,26 @@ Events
 Activity Timeline
 </a>
 
-
 <a href="notifications.php">
-<i class="fa-solid fa-bell"></i>
-Notifications
+
+🔔 Notifications
+
+<?php
+
+if($notifyCount > 0){
+
+echo "
+<span class='badge'>
+$notifyCount
+</span>
+";
+
+}
+
+?>
+
 </a>
+
 
 <a href="student_analytics.php">
 <i class="fa-solid fa-chart-line"></i>
