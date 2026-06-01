@@ -1,24 +1,37 @@
-```php
 <?php
+
 session_start();
+
 include "config.php";
 
-if(!isset($_SESSION['srn'])){
-    header("Location: login.php");
+/* ADMIN LOGIN CHECK */
+
+if(!isset($_SESSION['admin'])){
+
+    header("Location: admin_login.php");
+
     exit();
 }
+
+/* SEARCH */
 
 $search = "";
 
 if(isset($_GET['search'])){
+
     $search = $_GET['search'];
 }
 
 $result = $conn->query("
+
 SELECT * FROM Event
+
 WHERE event_name LIKE '%$search%'
+
 ORDER BY event_date ASC
+
 ");
+
 ?>
 
 <!DOCTYPE html>
@@ -140,14 +153,13 @@ ORDER BY event_date ASC
 <div class="sidebar">
 
 <h2>⚡ Admin Panel</h2>
-
-<a href="dashboard.php">🏠 Dashboard</a>
+<a href="admin_dashboard.php">🏠 Dashboard</a>
 
 <a href="admin_events.php">🎉 Events</a>
 
 <a href="analytics.php">📊 Analytics</a>
 
-<a href="profile.php">👤 Profile</a>
+<a href="admin_profile.php">👤 Profile</a>
 
 <a href="logout.php">🚪 Logout</a>
 
