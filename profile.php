@@ -1,38 +1,20 @@
 <?php
-session_start();
-
-include "config.php";
-
-<?php
 
 session_start();
-
 include "config.php";
-
-$notify = $conn->query("
-
-SELECT * FROM notifications
-
-WHERE is_read = 0
-
-");
-
-$notifyCount = $notify->num_rows;
-
-?>
-
 
 if(!isset($_SESSION['srn'])){
-
     header("Location: login.php");
     exit();
-
 }
 
 $srn = $_SESSION['srn'];
 
+/* STUDENT DETAILS */
+
 $result = $conn->query("
-SELECT * FROM Student
+SELECT *
+FROM Student
 WHERE srn='$srn'
 ");
 
@@ -40,22 +22,27 @@ $row = $result->fetch_assoc();
 
 /* ATTENDED EVENTS */
 
-$attended = $conn->query("
-SELECT COUNT(*) as total
+$attendedQuery = $conn->query("
+SELECT COUNT(*) AS total
 FROM Attendance
 WHERE srn='$srn'
 AND status='Present'
-")->fetch_assoc()['total'];
+");
+
+$attended = $attendedQuery->fetch_assoc()['total'];
 
 /* REGISTERED EVENTS */
 
-$registered = $conn->query("
-SELECT COUNT(*) as total
+$registeredQuery = $conn->query("
+SELECT COUNT(*) AS total
 FROM Registration
 WHERE srn='$srn'
-")->fetch_assoc()['total'];
+");
+
+$registered = $registeredQuery->fetch_assoc()['total'];
 
 $pending = $registered - $attended;
+
 ?>
 
 <!DOCTYPE html>
@@ -65,79 +52,130 @@ $pending = $registered - $attended;
 
 <title>My Profile</title>
 
-<link rel="stylesheet"
-href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+.profile-grid{
+
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+    gap:25px;
+}
+
+.profile-pic{
+
+    width:180px;
+    height:180px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:4px solid #9b59ff;
+
+    margin:auto;
+    display:block;
+}
+
+.stat{
+
+    font-size:50px;
+    font-weight:bold;
+    text-align:center;
+
+    color:white;
+}
+
+.info{
+
+    font-size:18px;
+    line-height:35px;
+}
+
+</style>
 
 </head>
 
 <body>
 
+<div class="sidebar">
+
+<h2>🎓 NeoCampus</h2>
+
+<a href="dashboard.php">🏠 Dashboard</a>
+
+<a href="student_events.php">📅 Events</a>
+
+<a href="notifications.php">🔔 Notifications</a>
+
+<a href="profile.php">👤 My Profile</a>
+
+<a href="logout.php">🚪 Logout</a>
+
+</div>
+
 <div class="main">
 
-<h1>
-👤 My Profile
-</h1>
+<h1>👤 My Profile</h1>
 
-<div class="container">
+<div class="profile-grid">
 
 <!-- PROFILE CARD -->
 
 <div class="card">
 
-<center>
-
 <?php
-if($row['profile_photo']){
-?>
 
+if(!empty($row['profile_photo'])){
+
+echo "
 <img
-src="uploads/<?php echo $row['profile_photo']; ?>"
-width="150"
-height="150"
-style="border-radius:50%;
-object-fit:cover;
-border:4px solid #c77dff;">
+src='uploads/".$row['profile_photo']."'
+class='profile-pic'>
+";
 
-<?php
 }else{
-?>
 
+echo "
 <img
-src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-width="150">
+src='assets/images/default-user.png'
+class='profile-pic'>
+";
+}
 
-<?php } ?>
-
-</center>
+?>
 
 <br>
 
-<h2>
+<div class="info">
+
+<b>Name:</b>
 <?php echo $row['name']; ?>
-</h2>
 
-<p>
-🎓 SRN:
+<br>
+
+<b>SRN:</b>
 <?php echo $row['srn']; ?>
-</p>
 
-<p>
-📧 Email:
+<br>
+
+<b>Email:</b>
 <?php echo $row['email']; ?>
-</p>
 
-<p>
-📱 Phone:
+<br>
+
+<b>Phone:</b>
 <?php echo $row['phone']; ?>
-</p>
 
-<p>
-🏫 Department:
+<br>
+
+<b>Department:</b>
 <?php echo $row['department']; ?>
-</p>
+
+</div>
 
 </div>
 
@@ -145,13 +183,13 @@ width="150">
 
 <div class="card">
 
-<h2>
-✅ Events Attended
-</h2>
+<h2>✅ Events Attended</h2>
 
-<h1>
+<div class="stat">
+
 <?php echo $attended; ?>
-</h1>
+
+</div>
 
 </div>
 
@@ -159,95 +197,46 @@ width="150">
 
 <div class="card">
 
-<h2>
-⏳ Yet To Attend
-</h2>
+<h2>⌛ Yet To Attend</h2>
 
-<h1>
+<div class="stat">
+
 <?php echo $pending; ?>
-</h1>
+
+</div>
 
 </div>
 
 </div>
 
 <br><br>
-
-<!-- UPDATE PROFILE -->
 
 <div class="card">
 
-<h2>
-✏️ Update Profile
-</h2>
+<h2>📊 Registration Summary</h2>
 
-<br>
+<p>
 
-<form
-action="update_profile.php"
-method="POST"
-enctype="multipart/form-data">
+Total Registered Events:
+<b><?php echo $registered; ?></b>
 
-<input
-type="text"
-name="name"
-value="<?php echo $row['name']; ?>"
-placeholder="Name">
+</p>
 
-<input
-type="email"
-name="email"
-value="<?php echo $row['email']; ?>"
-placeholder="Email">
+<p>
 
-<input
-type="text"
-name="phone"
-value="<?php echo $row['phone']; ?>"
-placeholder="Phone">
+Events Attended:
+<b><?php echo $attended; ?></b>
 
-<input
-type="text"
-name="department"
-value="<?php echo $row['department']; ?>"
-placeholder="Department">
+</p>
 
-<br><br>
+<p>
 
-<label>
-📸 Upload Profile Photo
-</label>
+Pending Events:
+<b><?php echo $pending; ?></b>
 
-<br><br>
-
-<input
-type="file"
-name="photo">
-
-<br><br>
-
-<button class="btn"
-type="submit">
-
-Update Profile
-
-</button>
-
-</form>
+</p>
 
 </div>
-
-<br>
-
-<a href="dashboard.php">
-
-<button class="btn">
-
-⬅ Back to Dashboard
-
-</button>
-
-</a>
 
 </div>
 
